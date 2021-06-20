@@ -90,6 +90,43 @@ if ($pres_speech_result->num_rows > 0) {
     echo "0 results";
 }
 
+// Average Party Sentiment
+$party_avgsmnt_sql = "select party, round(avg(Sentiment),2) as avgParySentmnt from presidents group by party";
+$party_avgsmnt_result = $conn->query($party_avgsmnt_sql);
+
+$parylabelArr = array();
+$partyvalueArr = array();
+
+if ($party_avgsmnt_result->num_rows > 0) {
+    // output data of each row
+    while($row = $party_avgsmnt_result->fetch_assoc()) {
+        $parylabelArr[] = $row["party"];
+        $partyvalueArr[] = $row["avgParySentmnt"];
+    }
+} else {
+    echo "0 results";
+}
+
+// Top 10 Presidents Average Sentiment
+$t10pres_avgsmnt_sql = "select president, round(avg(Sentiment),2) as avgPresSentmnt from presidents
+group by president
+order by avgPresSentmnt desc
+limit 10";
+$t10pres_avgsmnt_result = $conn->query($t10pres_avgsmnt_sql);
+
+$top10PreslabelArr = array();
+$top10PresvalueArr = array();
+
+if ($t10pres_avgsmnt_result->num_rows > 0) {
+    // output data of each row
+    while($row = $t10pres_avgsmnt_result->fetch_assoc()) {
+        $top10PreslabelArr[] = $row["president"];
+        $top10PresvalueArr[] = $row["avgPresSentmnt"];
+    }
+} else {
+    echo "0 results";
+}
+
 $conn->close();
 ?>
 
@@ -103,8 +140,8 @@ $conn->close();
     <meta name="author" content="Vasilis Pantazopoulos">
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-	<link rel="icon" type="image/ico" href="images/favicon.ico" />
+
+    <link rel="icon" type="image/ico" href="images/favicon.ico" />
 
 
     <link href="css/style.css" rel="stylesheet" />
@@ -117,49 +154,49 @@ $conn->close();
 <body data-spy="scroll" data-target=".navbar" data-offset="25">
 
 
-	<!-- Preloader -->
-	<div class="mask"><div id="loader"></div></div>
-	<!--/Preloader -->
-    
-    
-    
-    
-    
-	<!-- Home Section -->
-	<div id="home">
+<!-- Preloader -->
+<div class="mask"><div id="loader"></div></div>
+<!--/Preloader -->
 
-        	<img id="cycle-loader" src="images/ajax-loader.gif" />
-			<div id="fullscreen-slider">
-				<div>
-                    <img src="images/fs1.jpeg" alt="" />
-                    <div class="pattern">
-                        <div class="slide-content light">
-                            <div class="div-align-center">              
-                                <h1>Welcome to Sentilyzer</h1>
-                                <a href="#information" class="newave-button medium grey">Read More</a>
-                            </div>
-                        </div>
+
+
+
+
+<!-- Home Section -->
+<div id="home">
+
+    <img id="cycle-loader" src="images/ajax-loader.gif" />
+    <div id="fullscreen-slider">
+        <div>
+            <img src="images/fs1.jpeg" alt="" />
+            <div class="pattern">
+                <div class="slide-content light">
+                    <div class="div-align-center">
+                        <h1>Welcome to Sentilyzer</h1>
+                        <a href="#information" class="newave-button medium grey">Read More</a>
                     </div>
                 </div>
-
-                <div>
-                    <img src="images/fs1.jpeg" alt="" />
-                    <div class="pattern">
-                        <div class="slide-content light">
-                            <div class="div-align-center">
-                                <h1>Expert.ai Framework</h1>
-                                <a href="#information" class="newave-button medium grey">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-        
-	</div>	
-	<!-- End Home Section -->
+        </div>
 
-    <!-- Navigation -->
+        <div>
+            <img src="images/fs1.jpeg" alt="" />
+            <div class="pattern">
+                <div class="slide-content light">
+                    <div class="div-align-center">
+                        <h1>Expert.ai Framework</h1>
+                        <a href="#information" class="newave-button medium grey">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- End Home Section -->
+
+<!-- Navigation -->
 <!--    <nav id="navigation" class="navbar navbar-fixed-top navbar-expand-lg navbar-light bg-light">-->
 <!--        <div class=".container-fluid">-->
 <!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">-->
@@ -174,32 +211,32 @@ $conn->close();
 <!--        </div>-->
 <!--        </div>-->
 <!--    </nav>-->
-    <!-- End Navigation -->
+<!-- End Navigation -->
 
 
-	<!-- Information-->
-	<section id="information" class="content">
-    	
-        <!-- Container -->
-		<div class="container">
-			
-            <!-- Section Title -->
-            <div class="section-title">
-                <h1>Information</h1>
-                <span class="border"></span>
-            </div>				
-			<!--/Section Title -->
+<!-- Information-->
+<section id="information" class="content">
 
-            <div class="p-5 mb-4 bg-light rounded-3">
-                <div class="h-200 py-5 text-white bg-info rounded-3">
-                    <p class="fs-4">Welcome to Sentilyzer, a sentiment visualization tool of the United States President Speeches.</p>
-                    <p class="fs-4">Sentilyzer was created in the context of Sentiment & Opinion Mining Natural Language API Hackathon</p>
-                    <p class="fs-4">organized by <a href="https://devpost.com" target="_blank" class="newave-button medium btn-light">Devpost</a></p>
-                </div>
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Section Title -->
+        <div class="section-title">
+            <h1>Information</h1>
+            <span class="border"></span>
+        </div>
+        <!--/Section Title -->
+
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="h-200 py-5 text-white bg-info rounded-3">
+                <p class="fs-4">Welcome to Sentilyzer, a sentiment visualization tool of the United States President Speeches.</p>
+                <p class="fs-4">Sentilyzer was created in the context of Sentiment & Opinion Mining Natural Language API Hackathon</p>
+                <p class="fs-4">organized by <a href="https://devpost.com" target="_blank" class="newave-button medium btn-light">Devpost</a>
+                    The sentiment analysis was done through the
+                    <a href="https://www.expert.ai" target="_blank" class="newave-button medium btn-light">expert.ai</a> API.</p>
             </div>
 
-
-            <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card p-3 mb-2" style="width: 18rem;">
@@ -230,225 +267,340 @@ $conn->close();
                     </div>
                 </div>
             </div>
+        </div>
 
-		</div>
-        <!--/Container -->
-        
-	</section>	
-	<!--/Information-->
+    </div>
+    <!--/Container -->
 
-    <!-- Presidents-->
-    <section id="presidents" class="presidents" name="presidents" class="content">
+</section>
+<!--/Information-->
 
-        <!-- Container -->
-        <div class="container">
+<!-- Presidents-->
+<section id="presidents" class="presidents" name="presidents" class="content">
 
-            <!-- Section Title -->
-            <div class="section-title">
-                <h1>Presidents</h1>
-                <span class="border"></span>
-                <p>Select a President from the list to view Speech Sentiment Analysis.</p>
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Section Title -->
+        <div class="section-title">
+            <h1>Presidents</h1>
+            <span class="border"></span>
+            <p>Select a President from the list to view Speech Sentiment Analysis.</p>
+        </div>
+        <!--/Section Title -->
+
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="row my-3">
+                <div class="col">
+                    <div>
+                        <form action="index.php" method="POST">
+                            <!--                                <h3 class="card-title">President</h3>-->
+                            <div class="select">
+                                <?php
+                                echo "<select name=\"presname\" id=\"presname\">";
+                                echo "<option size =30 ></option>";
+                                while($row = $dropdows_result->fetch_assoc()) {
+                                    echo "<option value='" . $row['President'] . "'>" . $row['President'] . "</option>";
+                                }
+                                echo "</select>";
+                                ?>
+                            </div>
+                            <input id="btnSubmit" name="btnSubmit" type="button" class="hide-submit" value="Submit" />
+                        </form>
+                    </div>
+                    <!--                <h4>--><?php //echo "President: ". $president_name?><!--</h4>-->
+
+                    <div class="container">
+                        <h4>
+                            <span class="btn btn-success">
+                                Average Speeches Sentiment:
+                                <span id="spanavgsmnt">
+                                    <?php echo $president_avgsmnt?>
+                                </span>
+                            </span>
+                        </h4>
+                    </div>
+                </div>
             </div>
-            <!--/Section Title -->
-
-
-                <div class="row my-3">
-                    <div class="col">
-                        <div>
-                            <form action="index.php" method="POST">
-<!--                                <h3 class="card-title">President</h3>-->
-                                <div class="select">
-                                    <?php
-                                    echo "<select name=\"presname\" id=\"presname\">";
-                                    echo "<option size =30 ></option>";
-                                    while($row = $dropdows_result->fetch_assoc()) {
-                                        echo "<option value='" . $row['President'] . "'>" . $row['President'] . "</option>";
-                                    }
-                                    echo "</select>";
-                                    ?>
-                                </div>
-                                <input id="btnSubmit" name="btnSubmit" type="button" class="hide-submit" value="Submit" />
-                            </form>
-                        </div>
-                        <!--                <h4>--><?php //echo "President: ". $president_name?><!--</h4>-->
-                        <h4>Average Speeches Sentiment: <span id="spanavgsmnt"><?php echo $president_avgsmnt?></span></h4>
-                    </div>
-                </div>
-                <div class="row my-2">
-                    <div class="col-md-6 py-1">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="panel-heading ">
-                                    <h5 class="card-title">President Speeches Overall Emotions</h5>
-                                </div>
-                                <canvas id="taxonomyChart"></canvas>
+            <div class="row my-2">
+                <div class="col-md-6 py-1">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="panel-heading ">
+                                <h5 class="card-title">President Speeches Overall Emotions</h5>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 py-1">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="panel-heading ">
-                                    <h5 class="card-title">President Speeches Sentiment</h5>
-                                </div>
-                                <canvas id="speechChart"></canvas>
-                            </div>
+                            <canvas id="taxonomyChart"></canvas>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 py-1">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="panel-heading ">
+                                <h5 class="card-title">President Speeches Sentiment</h5>
+                            </div>
+                            <canvas id="speechChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+
+                <div class="col-md-6 py-1">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="panel-heading ">
+                                <h5 class="card-title">Party Average Sentiment</h5>
+                            </div>
+                            <canvas id="partyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 py-1">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="panel-heading ">
+                                <h5 class="card-title">Top 10 President Average Sentiment</h5>
+                            </div>
+                            <canvas id="top10PresChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
         </div>
-        <!--/Container -->
+    </div>
+    <!--/Container -->
 
-    </section>
-    <!--/Presidents-->
+</section>
+<!--/Presidents-->
 
-    <!-- Footer -->
-    <footer>
-		<div class="container no-padding">
-        	
-            <a id="back-top"><div id="menu_top"><div id="menu_top_inside"></div></div></a>
-            
-<!--            <ul class="socials-icons">-->
-<!--                <li><a href="#"><img src="images/facebook.png" alt="" /></a></li>-->
-<!--                <li><a href="#"><img src="images/twitter.png" alt="" /></a></li>-->
-<!--            </ul>-->
-            
-			<p class="copyright">2021 &copy; Sentilyzer. All rights reserved.</p>
-            
-		</div>
-	</footer>
-	<!--/Footer -->
-  
-    
-    
-	
-	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js'></script>
-    <script src="js/jquery.sticky.js"></script>
-	<script src="js/jquery.easing-1.3.pack.js" type="text/javascript"></script>
+<!-- Footer -->
+<footer>
+    <div class="container no-padding">
+
+        <a id="back-top"><div id="menu_top"><div id="menu_top_inside"></div></div></a>
+
+        <!--            <ul class="socials-icons">-->
+        <!--                <li><a href="#"><img src="images/facebook.png" alt="" /></a></li>-->
+        <!--                <li><a href="#"><img src="images/twitter.png" alt="" /></a></li>-->
+        <!--            </ul>-->
+
+        <p class="copyright">2021 &copy; Sentilyzer. All rights reserved.</p>
+
+    </div>
+</footer>
+<!--/Footer -->
+
+
+
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js'></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/jquery.easing-1.3.pack.js" type="text/javascript"></script>
 <!--	<script src="js/bootstrap.js" type="text/javascript"></script>-->
-	<script src="js/appear.js" type="text/javascript" ></script>
-	<script src="js/modernizr.js" type="text/javascript"></script>
-	<script src="js/jquery.prettyPhoto.js" type="text/javascript"></script>
-    <script src="js/isotope.js" type="text/javascript"></script>
-    <script src="js/jquery.bxslider.min.js"></script>
-    <script src="js/jquery.cycle.all.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/jquery.maximage.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/scripts.js" type="text/javascript"></script>
+<script src="js/appear.js" type="text/javascript" ></script>
+<script src="js/modernizr.js" type="text/javascript"></script>
+<script src="js/jquery.prettyPhoto.js" type="text/javascript"></script>
+<script src="js/isotope.js" type="text/javascript"></script>
+<script src="js/jquery.bxslider.min.js"></script>
+<script src="js/jquery.cycle.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/jquery.maximage.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/scripts.js" type="text/javascript"></script>
 <!---->
 <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
-    <!--    taxonomy chart script-->
-    <script>
-        const dataTaxonomy = {
-            labels: <?php echo json_encode($taxonomylabelArr) ?>,
-            datasets: [{
-                label: 'Emotion',
-                data: <?php echo json_encode($taxonomyvalueArr); ?>,
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(75, 192, 192)',
-                    'rgb(255, 205, 86)',
-                    'rgb(201, 203, 207)',
-                    'rgb(54, 162, 235)'
-                ]
-            }]
-        };
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
 
-        const configTaxonomy = {
-            type: 'bar',
-            data: dataTaxonomy,
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+<!--    taxonomy chart script-->
+<script>
+    const dataTaxonomy = {
+        labels: <?php echo json_encode($taxonomylabelArr) ?>,
+        datasets: [{
+            label: 'Emotion',
+            data: <?php echo json_encode($taxonomyvalueArr); ?>,
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)',
+                'rgb(54, 162, 235)'
+            ]
+        }]
+    };
+
+    const configTaxonomy = {
+        type: 'bar',
+        data: dataTaxonomy,
+        options: {
+            plugins: {
+                legend: {
+                    display: false
                 }
             }
-        };
+        }
+    };
 
-        var myChartTaxonomy = new Chart(
-            document.getElementById('taxonomyChart'),
-            configTaxonomy
-        );
-    </script>
+    var myChartTaxonomy = new Chart(
+        document.getElementById('taxonomyChart'),
+        configTaxonomy
+    );
+</script>
 
-    <!--    speech chart script-->
-    <script>
-        const dataSpeech = {
-            labels: <?php echo json_encode($speechlabelArr) ?>,
-            datasets: [{
-                label: 'Speech',
-                data: <?php echo json_encode($speechvalueArr); ?>,
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(75, 192, 192)',
-                    'rgb(255, 205, 86)',
-                    'rgb(201, 203, 207)',
-                    'rgb(54, 162, 235)'
-                ]
-            }]
-        };
+<!--    speech chart script-->
+<script>
+    const dataSpeech = {
+        labels: <?php echo json_encode($speechlabelArr) ?>,
+        datasets: [{
+            label: 'Speech',
+            data: <?php echo json_encode($speechvalueArr); ?>,
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)',
+                'rgb(54, 162, 235)'
+            ]
+        }]
+    };
 
-        const configSpeech = {
-            type: 'line',
-            data: dataSpeech,
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+    const configSpeech = {
+        type: 'line',
+        data: dataSpeech,
+        options: {
+            plugins: {
+                legend: {
+                    display: false
                 }
             }
-        };
+        }
+    };
 
-        var myChartSpeech = new Chart(
-            document.getElementById('speechChart'),
-            configSpeech
-        );
-    </script>
-    <script>
-        $(document).ready(()=>{
-            $("#presname").val("<?php echo $data['presname'] ?>");
-        });
-    </script>
-    <!--    ajax call-->
-    <script>
-        $(document).ready(function() {
-            $("#presname").change(function() {
-                var presname = $("#presname").val();
-                if(presname=='') {
-                    alert("Please select president.");
-                    return false;
+    var myChartSpeech = new Chart(
+        document.getElementById('speechChart'),
+        configSpeech
+    );
+</script>
+
+<!--    party chart script-->
+<script>
+    const dataParty = {
+        labels: <?php echo json_encode($parylabelArr) ?>,
+        datasets: [{
+            label: 'Party',
+            data: <?php echo json_encode($partyvalueArr); ?>,
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)',
+                'rgb(54, 162, 235)'
+            ]
+        }]
+    };
+
+    const configParty = {
+        type: 'pie',
+        data: dataParty,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom'
                 }
-                $.ajax({
-                    type: "POST",
-                    url: "scratch.php",
-                    data: {
-                        presname: presname
-                    },
-                    cache: false,
-                    success: function(result) {
-                        var json = $.parseJSON(result);
-                        $('#spanavgsmnt').text(json.president_avgsmnt);
-                        dataSpeech.labels = json.speechlabelArr;
-                        dataSpeech.datasets[0].data = json.speechvalueArr;
-                        myChartSpeech.update();
-                        dataTaxonomy.labels = json.taxonomylabelArr;
-                        dataTaxonomy.datasets[0].data = json.taxonomyvalueArr;
-                        myChartTaxonomy.update();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr);
-                    }
-                });
+            }
+        }
+    };
+
+    var myChartParty = new Chart(
+        document.getElementById('partyChart'),
+        configParty
+    );
+</script>
+
+<!--    top 10 pres chart script-->
+<script>
+    const dataTop10Pres = {
+        labels: <?php echo json_encode($top10PreslabelArr) ?>,
+        datasets: [{
+            label: 'Top 10',
+            data: <?php echo json_encode($top10PresvalueArr); ?>,
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)',
+                'rgb(54, 162, 235)'
+            ]
+        }]
+    };
+
+    const configTop10Pres = {
+        type: 'pie',
+        data: dataTop10Pres,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                }
+            }
+        }
+    };
+
+    var myChartTop10Pres = new Chart(
+        document.getElementById('top10PresChart'),
+        configTop10Pres
+    );
+</script>
+
+<script>
+    $(document).ready(()=>{
+        $("#presname").val("<?php echo $data['presname'] ?>");
+    });
+</script>
+
+<!--    ajax call-->
+<script>
+    $(document).ready(function() {
+        $("#presname").change(function() {
+            var presname = $("#presname").val();
+            if(presname=='') {
+                alert("Please select president.");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "scratch.php",
+                data: {
+                    presname: presname
+                },
+                cache: false,
+                success: function(result) {
+                    var json = $.parseJSON(result);
+                    $('#spanavgsmnt').text(json.president_avgsmnt);
+                    dataSpeech.labels = json.speechlabelArr;
+                    dataSpeech.datasets[0].data = json.speechvalueArr;
+                    myChartSpeech.update();
+                    dataTaxonomy.labels = json.taxonomylabelArr;
+                    dataTaxonomy.datasets[0].data = json.taxonomyvalueArr;
+                    myChartTaxonomy.update();
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr);
+                }
             });
         });
-    </script>
-    <!--    bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-            crossorigin="anonymous"></script>
+    });
+</script>
+<!--    bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
 
-	</body>
+</body>
 </html>
